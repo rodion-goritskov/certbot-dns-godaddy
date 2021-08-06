@@ -1,0 +1,34 @@
+name: certbot-dns-godaddy
+base: core20 # the base snap is the execution environment for this snap
+version: '0.1' # just for humans, typically '1.2+git' or '1.3.2'
+summary: Single-line elevator pitch for your amazing snap # 79 char long summary
+description: |
+  This is my-snap's description. You have a paragraph or two to tell the
+  most important story about your snap. Keep it under 100 words though,
+  we live in tweetspace and your description wants to look good in the snap
+  store.
+
+grade: devel # must be 'stable' to release into candidate/stable channels
+confinement: strict # use 'strict' once you have the right plugs and slots
+
+parts:
+  certbot-dns-godaddy:
+    # See 'snapcraft plugins'
+    plugin: python
+    source: .
+    build-environment:
+      - IS_SNAP: "True"
+      - PIP_CONSTRAINT: $SNAPCRAFT_PART_SRC/snap-constraints.txt
+    build-packages:
+      - gcc
+      - build-essential
+      - libssl-dev
+      - libffi-dev
+      - python3-dev
+
+slots:
+  certbot:
+    interface: content
+    content: certbot-1
+    read:
+      - $SNAP/lib/python3.8/site-packages
